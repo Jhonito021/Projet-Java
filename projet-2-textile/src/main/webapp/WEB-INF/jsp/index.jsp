@@ -1,41 +1,45 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.projetsimple.model.TextileOrder" %>
-<%
-    List<TextileOrder> orders = (List<TextileOrder>) request.getAttribute("orders");
-%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Gestion commandes textile</title>
+    <title>Nouvelle commande textile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
-<body class="bg-light">
+<body>
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="h3">Commandes textile</h1>
-        <a class="btn btn-primary" href="<%= request.getContextPath() %>/orders">Nouvelle commande</a>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="h4 mb-0">Nouvelle commande</h2>
+        </div>
+        <div class="card-body">
+            <form action="${pageContext.request.contextPath}/saveOrder" method="post">
+                <div class="mb-3">
+                    <label for="clientName" class="form-label">Nom du client</label>
+                    <input type="text" class="form-control" id="clientName" name="clientName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="articleType" class="form-label">Type d'article</label>
+                    <select class="form-select" id="articleType" name="articleType" required>
+                        <option value="T-shirt">T-shirt</option>
+                        <option value="Pantalon">Pantalon</option>
+                        <option value="Robe">Robe</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required>
+                </div>
+                <div class="mb-3">
+                    <label for="deliveryDate" class="form-label">Date de livraison prévue</label>
+                    <input type="date" class="form-control" id="deliveryDate" name="deliveryDate" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <a href="${pageContext.request.contextPath}/orders" class="btn btn-outline-primary">Annuler</a>
+            </form>
+        </div>
     </div>
-
-    <table class="table table-bordered bg-white">
-        <thead>
-        <tr><th>ID</th><th>Client</th><th>Article</th><th>Quantite</th><th>Livraison prevue</th><th>Statut</th><th>Action</th></tr>
-        </thead>
-        <tbody>
-        <% if (orders != null) {
-            for (TextileOrder order : orders) { %>
-        <tr>
-            <td><%= order.getId() %></td>
-            <td><%= order.getClientName() %></td>
-            <td><%= order.getArticleType() %></td>
-            <td><%= order.getQuantity() %></td>
-            <td><%= order.getExpectedDeliveryDate() %></td>
-            <td><%= order.getStatus() %></td>
-            <td><a class="btn btn-sm btn-outline-primary" href="<%= request.getContextPath() %>/workflow?orderId=<%= order.getId() %>">Workflow</a></td>
-        </tr>
-        <% }} %>
-        </tbody>
-    </table>
 </div>
 </body>
 </html>
